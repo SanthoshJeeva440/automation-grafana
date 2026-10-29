@@ -1,0 +1,2 @@
+# Example only. Never commit real secrets. Inject INFLUX_TOKEN through Jenkins Credentials.
+INFLUX_TOKEN=inject-from-jenkins-credentials
