@@ -1,17 +1,49 @@
-import os,re,requests
-from packaging.version import Version,InvalidVersion
+import os
+import re
+import requests
+from packaging.version import Version, InvalidVersion
+
+
 def latest_stable(repository):
-    s=requests.Session()
-    s.headers.update({"Accept":"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28"})
-    if os.getenv("GITHUB_TOKEN"): s.headers["Authorization"]="Bearer "+os.environ["GITHUB_TOKEN"]
-    r=s.get(f'https://api.github.com/repos/{repository}/releases?per_page=30',timeout=30); r.raise_for_status()
-    for rel in r.json():
-        if rel.get("draft") or rel.get("prerelease"): continue
-        m=re.search(r'(?<!\\d)(\\d+\\.\\d+(?:\\.\\d+)?(?:[-+][0-9A-Za-z.-]+)?)',rel.get("tag_name","").lstrip("vV"))
-        if not m: continue
+    session = requests.Session()
+    session.headers.update({
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+    })
+    if os.getenv("GITHUB_TOKEN"):
+        session.headers["Authorization"] = "Bearer " + os.environ["GITHUB_TOKEN"]
+
+    url = f"https://api.github.com/repos/{repository}/releases?per_page=30"
+    response = session.get(url, timeout=30)
+    response.raise_for_status()
+
+    for release in response.json():
+        if release.get("draft") or release.get("prerelease"):
+            continue
+
+        tag = release.get("tag_name", "").lstrip("vV")
+        match = re.search(
+            r"(?<!\d)(\d+\.\d+(?:\.\d+)?(?:[-+][0-9A-Za-z.-]+)?)",
+            tag,
+        )
+        if not match:
+            continue
+
         try:
-            v=Version(m.group(1))
-            if v.is_prerelease or v.is_devrelease: continue
-            return {"version":str(v),"url":rel.get("html_url",f'https://github.com/{repository}/releases'),"date":rel.get("published_at") or ""}
-        except InvalidVersion: pass
-    raise RuntimeError(f"No stable semantic-version GitHub release found for {repository}")
+            version = Version(match.group(1))
+            if version.is_prerelease or version.is_devrelease:
+                continue
+            return {
+                "version": str(version),
+                "url": release.get(
+                    "html_url",
+                    f"https://github.com/{repository}/releases",
+                ),
+                "date": release.get("published_at") or "",
+            }
+        except InvalidVersion:
+            continue
+
+    raise RuntimeError(
+        f"No stable semantic-version GitHub release found for {repository}"
+    )
