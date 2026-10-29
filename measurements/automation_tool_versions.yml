@@ -1,0 +1,12 @@
+measurement: automation_tool_versions
+purpose: Weekly observation of latest stable versions
+tags: [tool, category, source]
+fields:
+  latest_version: string
+  previous_version: string
+  upgrade_detected: boolean
+  release_url: string
+  release_date: string
+  repository: string
+  tool_name: string
+timestamp: observation_time
