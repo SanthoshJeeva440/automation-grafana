@@ -1,0 +1,11 @@
+measurement: github_account_repository_summary
+purpose: Owned repository visibility and status counts
+tags:
+  - username
+fields:
+  - total_owned_repositories (integer)
+  - public_repositories (integer)
+  - private_repositories (integer)
+  - forked_repositories (integer)
+  - archived_repositories (integer)
+  - observed_at_utc (string)

@@ -1,0 +1,26 @@
+measurement: github_repository_metrics
+purpose: Per-repository source-control and collaboration statistics
+tags:
+  - username
+  - repository
+  - visibility
+fields:
+  - commits_total (integer)
+  - contributors_total (integer)
+  - pull_requests_total (integer)
+  - pull_requests_open (integer)
+  - pull_requests_closed (integer)
+  - forks (integer)
+  - stars (integer)
+  - watchers (integer)
+  - open_issues (integer)
+  - size_kb (integer)
+  - is_fork (integer 0/1)
+  - is_archived (integer 0/1)
+  - default_branch (string)
+  - language (string)
+  - created_at (string)
+  - updated_at (string)
+  - pushed_at (string)
+  - html_url (string)
+  - observed_at_utc (string)

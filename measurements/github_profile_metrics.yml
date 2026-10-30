@@ -1,0 +1,16 @@
+measurement: github_profile_metrics
+purpose: Snapshot of a GitHub account profile at each collection time
+tags:
+  - username
+  - account_type
+fields:
+  - followers (integer)
+  - following (integer)
+  - public_repos (integer)
+  - public_gists (integer)
+  - name (string)
+  - company (string)
+  - location (string)
+  - html_url (string)
+  - created_at (string)
+  - observed_at_utc (string)
